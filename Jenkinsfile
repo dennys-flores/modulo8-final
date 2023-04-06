@@ -8,7 +8,9 @@ pipeline {
                     dir('/home/dennys/Documentos/mod8-final') {
                         git branch: 'final', url: 'git@github.com:dennys-flores/modulo8-final.git'
                     }
-                // Get some code from a GitHub repository
+                    // Get some code from a GitHub repository
+                    sh "echo 'git clone'"
+                }
             }
         }
         stage('Build') {
