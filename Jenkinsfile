@@ -66,10 +66,10 @@ pipeline {
         stage('Deploy-QA') {
             steps {
                 sh "echo 'Deploy QA'"
-                sh "docker pull 192.168.76.132:8081/${env.SERVICE_BACK}:${BUILD_NUMBER}"
-                sh "docker pull 192.168.76.132:8081/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
-                sh "docker run -d -p 81:80 --name q-fronted 192.168.76.132:8081/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
-                sh "docker run -d -p 5001:5000 --name q-backend 192.168.76.132:8081/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker pull 192.168.76.132:8082/${env.SERVICE_BACK}:${BUILD_NUMBER}"
+                sh "docker pull 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker run -d -p 81:80 --name q-fronted 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker run -d -p 5001:5000 --name q-backend 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
             }
         }
         stage('QA-Test') {
@@ -84,10 +84,10 @@ pipeline {
         stage('Deploy-Prod') {
             steps {
                 sh "echo 'Deploy Produccion'"
-                sh "docker pull 192.168.76.132:8081/${env.SERVICE_BACK}:${BUILD_NUMBER}"
-                sh "docker pull 192.168.76.132:8081/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
-                sh "docker run -d -p 82:80 --name q-fronted 192.168.76.132:8081/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
-                sh "docker run -d -p 5002:5000 --name q-backend 192.168.76.132:8081/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker pull 192.168.76.132:8082/${env.SERVICE_BACK}:${BUILD_NUMBER}"
+                sh "docker pull 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker run -d -p 82:80 --name q-fronted 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker run -d -p 5002:5000 --name q-backend 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
                 
             }
         }
