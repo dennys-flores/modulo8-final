@@ -66,8 +66,9 @@ pipeline {
         stage('Deploy-QA') {
             steps {
                 sh "echo 'Deploy QA'"
-                sh "docker pull 192.168.76.132:8082/${env.SERVICE_BACK}:${BUILD_NUMBER}"
-                sh "docker pull 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                dir('/home/dennys/Documentos/mod8-final') {
+                    sh "docker-compose up -d "
+                }
             }
         }
         stage('QA-Test') {
@@ -82,11 +83,9 @@ pipeline {
         stage('Deploy-Prod') {
             steps {
                 sh "echo 'Deploy Produccion'"
-                sh "docker pull 192.168.76.132:8082/${env.SERVICE_BACK}:${BUILD_NUMBER}"
-                sh "docker pull 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
-                sh "docker run -d -p 82:80 --name prod-fronted 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
-                sh "docker run -d -p 5002:5000 --name prod-backend 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
-                
+                dir('/home/dennys/Documentos/mod8-final') {
+                    sh "docker-compose up -d "
+                }
             }
         }
         
