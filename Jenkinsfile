@@ -45,8 +45,12 @@ pipeline {
                 sh "echo 'Deploy'"
                 dir('/home/dennys/Documentos/mod8-final') {
                     sh "docker-compose up -d "
+                }
+                dir('/home/dennys/Documentos/mod8-final/backend') {
                     sh "docker build -t 192.168.76.132:8082/${env.SERVICE_BACK}:${BUILD_NUMBER} ."
                     sh "docker push 192.168.76.132:8082/${env.SERVICE_BACK}:${BUILD_NUMBER}"
+                }
+                dir('/home/dennys/Documentos/mod8-final/frontend') {
                     sh "docker build -t 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER} ."
                     sh "docker push 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
                 }
@@ -62,9 +66,10 @@ pipeline {
         stage('Deploy-QA') {
             steps {
                 sh "echo 'Deploy QA'"
-                dir('/home/dennys/Documentos/mod8-final') {
-                    sh "docker-compose up -d "
-                }
+                sh "docker pull 192.168.76.132:8082/${env.SERVICE_BACK}:${BUILD_NUMBER}"
+                sh "docker pull 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker run -d -p 81:80 --name q-fronted 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker run -d -p 5001:5000 --name q-backend 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
             }
         }
         stage('QA-Test') {
@@ -79,9 +84,11 @@ pipeline {
         stage('Deploy-Prod') {
             steps {
                 sh "echo 'Deploy Produccion'"
-                dir('/home/dennys/Documentos/mod8-final') {
-                    sh "docker-compose up -d "
-                }
+                sh "docker pull 192.168.76.132:8082/${env.SERVICE_BACK}:${BUILD_NUMBER}"
+                sh "docker pull 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker run -d -p 82:80 --name q-fronted 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                sh "docker run -d -p 5002:5000 --name q-backend 192.168.76.132:8082/${env.SERVICE_FRONT}:${BUILD_NUMBER}"
+                
             }
         }
         
